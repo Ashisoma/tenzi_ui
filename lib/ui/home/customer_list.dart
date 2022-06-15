@@ -12,7 +12,7 @@ class CustomerList extends StatefulWidget {
 }
 
 class _CustomerListState extends State<CustomerList> {
-  bool toggle = false;
+  bool toggle = false;  
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:cashbook/models/transaction.dart';
 import 'package:cashbook/stores/cash_category_store.dart';
 import 'package:cashbook/stores/payment_mode_store.dart';
 import 'package:cashbook/stores/transaction_store.dart';
+import 'package:cashbook/ui/home/add_customer_screen.dart';
 import 'package:cashbook/ui/home/home_screen/home_screen.dart';
 import 'package:cashbook/ui/manage_transaction/add_payment_mode.dart';
 import 'package:cashbook/ui/manage_transaction/choose_category.dart';
@@ -17,6 +18,7 @@ import 'package:cashbook/utils/string_extension.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:intl/intl.dart';
 import '../../service_locator.dart';
 import '../../utils/image_helper.dart';
@@ -38,6 +40,7 @@ class ManageTransaction extends StatefulWidget {
 }
 
 class _ManageTransactionState extends State<ManageTransaction> {
+  bool toggle = false;
   final _formKey = GlobalKey<FormState>();
   TransactionStore? transactionStore;
   bool? isCashIn;
@@ -172,80 +175,9 @@ class _ManageTransactionState extends State<ManageTransaction> {
           title: isCashIn!
               ? const Text(' Cash In Entry')
               : const Text(' Cash Out Entry'),
+          actions: [mySwitch()],
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              children: [
-                if (transaction != null)
-                  Observer(builder: (_) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Row(
-                          children: [
-                            Radio(
-                              key: const ValueKey(0),
-                              groupValue: widget._categoryStore
-                                  .selectedTransactionCategoryType,
-                              value: true,
-                              onChanged: (_) {
-                                widget._categoryStore
-                                    .changeSelectedTransactionCategoryType(
-                                        true);
-                                widget._categoryStore.selectedCategory =
-                                    widget._categoryStore.cashInCategoryList[0];
-
-                                print(
-                                    'transaction category ${transaction!.category}');
-                              },
-                            ),
-                            Text(
-                              'Cash In',
-                              style: _theme.textTheme.headline4,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Radio(
-                              key: const ValueKey(1),
-                              groupValue: widget._categoryStore
-                                  .selectedTransactionCategoryType,
-                              value: false,
-                              onChanged: (_) {
-                                widget._categoryStore
-                                    .changeSelectedTransactionCategoryType(
-                                        false);
-                                widget._categoryStore.selectedCategory = widget
-                                    ._categoryStore.cashOutCategoryList[0];
-
-                                print(
-                                    'transaction category ${transaction!.category}');
-                              },
-                            ),
-                            Text(
-                              'Cash Out',
-                              style: _theme.textTheme.headline4,
-                            ),
-                          ],
-                        ),
-                      ],
-                    );
-                  }),
-                const SizedBox(
-                  height: 15.0,
-                ),
-                _selectDateAndTime(context, transactionStore!),
-                const SizedBox(height: 20),
-                _form(context, transactionStore!, isCashIn!, transaction,
-                    _theme, widget._customImageHelper),
-                const SizedBox(height: 50),
-              ],
-            ),
-          ),
-        ),
+        body: toggle ? CashIn() : ToReceiveView(),
         floatingActionButton: _floatingButton(
           context,
           transactionStore!,
@@ -256,6 +188,345 @@ class _ManageTransactionState extends State<ManageTransaction> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
+  }
+
+  Widget CashIn() {
+    ThemeData _theme = Theme.of(context);
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          children: [
+            if (transaction != null)
+              Observer(builder: (_) {
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Row(
+                      children: [
+                        Radio(
+                          key: const ValueKey(0),
+                          groupValue: widget
+                              ._categoryStore.selectedTransactionCategoryType,
+                          value: true,
+                          onChanged: (_) {
+                            widget._categoryStore
+                                .changeSelectedTransactionCategoryType(true);
+                            widget._categoryStore.selectedCategory =
+                                widget._categoryStore.cashInCategoryList[0];
+
+                            print(
+                                'transaction category ${transaction!.category}');
+                          },
+                        ),
+                        Text(
+                          'Cash In',
+                          style: _theme.textTheme.headline4,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Radio(
+                          key: const ValueKey(1),
+                          groupValue: widget
+                              ._categoryStore.selectedTransactionCategoryType,
+                          value: false,
+                          onChanged: (_) {
+                            widget._categoryStore
+                                .changeSelectedTransactionCategoryType(false);
+                            widget._categoryStore.selectedCategory =
+                                widget._categoryStore.cashOutCategoryList[0];
+
+                            print(
+                                'transaction category ${transaction!.category}');
+                          },
+                        ),
+                        Text(
+                          'Cash Out',
+                          style: _theme.textTheme.headline4,
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              }),
+            const SizedBox(
+              height: 15.0,
+            ),
+            _selectDateAndTime(context, transactionStore!),
+            const SizedBox(height: 20),
+            _form(context, transactionStore!, isCashIn!, transaction, _theme,
+                widget._customImageHelper),
+            const SizedBox(height: 50),
+          ],
+        ),
+      ),
+    );
+  }
+
+  ToReceiveView() {
+    return Container(
+      child: Scaffold(
+        backgroundColor: Colors.grey.shade200,
+        body: Container(
+          padding: EdgeInsets.all(12.0),
+          child: SingleChildScrollView(
+              child: Column(children: [
+            // _bookAndTimeFilter(context),
+            const SizedBox(height: 10.0),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+              child: Observer(
+                builder: (_) {
+                  return Column(
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: 250,
+                            child: Column(
+                              children: [
+                                FittedBox(
+                                  child: Text(
+                                    'Total Amount to be Received',
+                                    style:
+                                        Theme.of(context).textTheme.headline3,
+                                  ),
+                                ),
+                                FittedBox(
+                                  child: Text(
+                                    'KES 2,453',
+                                    style:
+                                        Theme.of(context).textTheme.headline4,
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      // cashInOutStatus(context),
+                      // const SizedBox(height: 5.0),
+                    ],
+                  );
+                },
+              ),
+            ),
+            // customListVIew(),
+            const SizedBox(height: 5.0),
+            const Divider(),
+            customListView1(),
+            // const SizedBox(height: 30.0),
+          ])),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+        floatingActionButton: floatingActionButton(),
+      ),
+    );
+  }
+
+  Widget floatingActionButton() {
+    ThemeData _theme = Theme.of(context);
+    return FloatingActionButton.extended(
+        backgroundColor: Colors.blue,
+        onPressed: () {
+          Navigator.of(context).pushNamed(CustomerScreen.routeName);
+        },
+        icon: Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
+        label: Text(
+          "Add Customer",
+          style: TextStyle(color: Colors.white),
+        ));
+  }
+
+  Widget customListView1() {
+    return ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: 2, //_transactionsList.length,
+        itemBuilder: (ctx, index) {
+          // final Transaction _currentTransaction = _transactionsList[index];
+
+          // String? currentDate =
+          // DateFormat('d MMM y').format(_currentTransaction.date);
+
+          double _balanceStatus = 0;
+
+          // if (previousDate != currentDate || index == 0) {
+          //   previousDate = currentDate;
+          //   FunctionResponse _fResponse =
+          //       _homeScreenStore.findBalanceStatusByDate(currentDate);
+          //   // print('---- ${_fResponse.message}');
+          //   _balanceStatus = _fResponse.data;
+          // } else {
+          //   currentDate = null;
+          // }
+
+          return GestureDetector(
+            onTap: () {},
+            //Navigator.of(context)
+            // .pushNamed(TransactionDetailsScreen.routeName
+            //arguments: {
+            // 'transactionStore': _transactionStore,
+            // 'transaction': _currentTransaction,
+            // 'isCashIn': _currentTransaction.isCashIn,
+            //}
+            // ),
+            child: Card(
+                // key: ValueKey(_currentTransaction.id),
+                child: Column(
+              children: [
+                // if (currentDate != null)
+                // Container(
+                //   padding: const EdgeInsets.all(8.0),
+                //   color: Theme.of(context).primaryColorLight,
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       Text(
+                //         // currentDate,
+                //         "12-12-12",
+                //         style: const TextStyle(fontWeight: FontWeight.bold),
+                //       ),
+                //       Text("Balance KES 125.00"
+                //           //'Balance ${_transactionStore.selectedCurrency} ${_balanceStatus.toStringAsFixed(2).priceCommas()}',
+                //           )
+                //     ],
+                //   ),
+                // ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: InkWell(
+                            onTap: () {},
+                            // child: ClipRRect(
+                            //   borderRadius: BorderRadius.circular(30),
+                            //   child: Image.asset(
+                            //       'assets/images/default_user_image.png'),
+                            // ),
+                            // child: Image.asset(
+                            //     'assets/images/default_user_image.png'),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.green,
+                              child: Center(
+                                child: Text(
+                                  "JD",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                              ),
+                            )),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Column(
+                            // crossAxisAlignment:
+                            //     CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "John Doe",
+                                // _currentTransaction.remarks
+                                // .capitalize(),
+                                // softWrap: true,
+                                // maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: Theme.of(context).textTheme.headline5,
+                              ),
+                              Chip(
+                                backgroundColor: Colors.white,
+                                //     .primaryColor
+                                //     .withAlpha(10),
+                                label: SizedBox(
+                                  // width: 50,
+                                  child: Text(
+                                    // _cashCategoryStore
+                                    //     .findCashCategoryById(
+                                    //         _currentTransaction
+                                    //             .category,
+                                    //         _currentTransaction
+                                    //             .isCashIn)
+                                    //     .title
+                                    //     .capitalize(),
+                                    "+2547123456789",
+                                    textAlign: TextAlign.center,
+                                    // overflow: TextOverflow.ellipsis,
+                                    // style: TextStyle(
+                                    //   color: Colors.purple.shade200,
+                                    // ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Column(
+                            children: [
+                              Observer(builder: (_) {
+                                return Text(
+                                  "KES 200",
+                                  // '  ${_transactionStore.selectedCurrency} ${_currentTransaction.amount.toStringAsFixed(2).priceCommas()}',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headline5!
+                                      .copyWith(
+                                        color:
+                                            // _currentTransaction.isCashIn
+                                            // ? Colors.green
+                                            Colors.green,
+                                      ),
+                                );
+                              }),
+                              Chip(
+                                backgroundColor: Colors.white,
+                                //     .primaryColor
+                                //     .withAlpha(10),
+                                label: SizedBox(
+                                  // width: 50,
+                                  child: Text(
+                                    "21st May 2022",
+                                    // _paymentModeStore
+                                    //     .findPaymentModeById(
+                                    //         _currentTransaction
+                                    //             .paymentMode)
+                                    //     .title
+                                    //     .capitalize(),
+                                    textAlign: TextAlign.center,
+                                    // overflow: TextOverflow.ellipsis,
+                                    // style: const TextStyle(
+                                    //   color: Colors.brown,
+                                    // ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            )),
+          );
+        });
   }
 
   Widget _floatingButton(
@@ -750,5 +1021,26 @@ class _ManageTransactionState extends State<ManageTransaction> {
         ),
       ],
     );
+  }
+
+  mySwitch() {
+    if (isCashIn!) {
+      FlutterSwitch(
+        showOnOff: true,
+        activeText: "Cash In",
+        valueFontSize: 10.0,
+        width: 110,
+        inactiveText: "To Receive",
+        activeColor: Colors.red,
+        borderRadius: 20.0,
+        value: toggle,
+        inactiveColor: Colors.green,
+        onToggle: (value) {
+          setState(() {
+            toggle = value;
+          });
+        },
+      );
+    }
   }
 }

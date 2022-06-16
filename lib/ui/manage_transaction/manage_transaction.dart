@@ -41,6 +41,7 @@ class ManageTransaction extends StatefulWidget {
 
 class _ManageTransactionState extends State<ManageTransaction> {
   bool toggle = false;
+  bool toggle2 = false;
   final _formKey = GlobalKey<FormState>();
   TransactionStore? transactionStore;
   bool? isCashIn;
@@ -175,9 +176,9 @@ class _ManageTransactionState extends State<ManageTransaction> {
           title: isCashIn!
               ? const Text(' Cash In Entry')
               : const Text(' Cash Out Entry'),
-          actions: [mySwitch()],
+          actions: [isCashIn! ? mySwitch() : mySwitch2()],
         ),
-        body: toggle ? CashIn() : ToReceiveView(),
+        body: toggle ? ToReceiveView() : CashIn(),
         floatingActionButton: _floatingButton(
           context,
           transactionStore!,
@@ -190,7 +191,11 @@ class _ManageTransactionState extends State<ManageTransaction> {
     );
   }
 
-  Widget CashIn() {
+  Widget cash() {
+    return Text("Hello, world");
+  }
+
+  CashIn() {
     ThemeData _theme = Theme.of(context);
     return SingleChildScrollView(
       child: Padding(
@@ -267,86 +272,126 @@ class _ManageTransactionState extends State<ManageTransaction> {
 
   ToReceiveView() {
     return Container(
-      child: Scaffold(
-        backgroundColor: Colors.grey.shade200,
-        body: Container(
-          padding: EdgeInsets.all(12.0),
-          child: SingleChildScrollView(
-              child: Column(children: [
-            // _bookAndTimeFilter(context),
-            const SizedBox(height: 10.0),
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8.0),
+      padding: const EdgeInsets.all(12.0),
+      child: Form(
+        key: _formKey,
+        child: Column(children: [
+          SizedBox(
+            height: 20.0,
+          ),
+          _selectDateAndTimes(),
+          SizedBox(
+            height: 20.0,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              hintText: 'Customer Name',
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                borderSide: BorderSide(
+                  color: Colors.grey,
+                ),
               ),
-              child: Observer(
-                builder: (_) {
-                  return Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            width: 250,
-                            child: Column(
-                              children: [
-                                FittedBox(
-                                  child: Text(
-                                    'Total Amount to be Received',
-                                    style:
-                                        Theme.of(context).textTheme.headline3,
-                                  ),
-                                ),
-                                FittedBox(
-                                  child: Text(
-                                    'KES 2,453',
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 20.0),
-                      // cashInOutStatus(context),
-                      // const SizedBox(height: 5.0),
-                    ],
-                  );
-                },
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                borderSide: BorderSide(color: Colors.blue),
               ),
             ),
-            // customListVIew(),
-            const SizedBox(height: 5.0),
-            const Divider(),
-            customListView1(),
-            // const SizedBox(height: 30.0),
-          ])),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        floatingActionButton: floatingActionButton(),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              hintText: 'Amount',
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                borderSide: BorderSide(
+                  color: Colors.grey,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                borderSide: BorderSide(color: Colors.blue),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(
+              hintText: 'Remark',
+              contentPadding:
+                  EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                borderSide: BorderSide(
+                  color: Colors.grey,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                borderSide: BorderSide(color: Colors.blue),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(
+                child: Text(
+                  "Due Date :",
+                  style: Theme.of(context).textTheme.headline4,
+                ),
+              ),
+              SizedBox(
+                width: 50,
+              ),
+              InkWell(
+                onTap: () async {
+                  final date = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000, 8),
+                      lastDate: DateTime(2101));
+
+                  // transactionStore.setTransactionDate(date);
+                },
+                child: InkWell(
+                  // width: 10,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.calendar_today),
+                      Observer(builder: (_) {
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                          child: Text("27-5-2022"
+                              // DateFormat('d-M-y')
+                              //   .format(transactionStore.transactionDate)
+                              ),
+                        );
+                      }),
+                      const Icon(Icons.arrow_drop_down_sharp),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Divider()
+          // payment(),
+        ]),
       ),
     );
-  }
-
-  Widget floatingActionButton() {
-    ThemeData _theme = Theme.of(context);
-    return FloatingActionButton.extended(
-        backgroundColor: Colors.blue,
-        onPressed: () {
-          Navigator.of(context).pushNamed(CustomerScreen.routeName);
-        },
-        icon: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        label: Text(
-          "Add Customer",
-          style: TextStyle(color: Colors.white),
-        ));
   }
 
   Widget customListView1() {
@@ -1023,24 +1068,113 @@ class _ManageTransactionState extends State<ManageTransaction> {
     );
   }
 
-  mySwitch() {
+  Widget mySwitch() {
+    return FlutterSwitch(
+      showOnOff: true,
+      activeText: "To Receive",
+      valueFontSize: 10.0,
+      width: 110,
+      inactiveText: "Cash In",
+      activeColor: Colors.orange,
+      borderRadius: 20.0,
+      value: toggle,
+      inactiveColor: Colors.green,
+      onToggle: (value) {
+        setState(() {
+          toggle = value;
+        });
+      },
+    );
+
+    // }
+  }
+
+  Widget mySwitch2() {
+    return FlutterSwitch(
+      showOnOff: true,
+      activeText: "To Pay",
+      valueFontSize: 10.0,
+      width: 110,
+      inactiveText: "Cash Out",
+      activeColor: Colors.orange,
+      borderRadius: 20.0,
+      value: toggle,
+      inactiveColor: Colors.red,
+      onToggle: (value) {
+        setState(() {
+          toggle = value;
+          // toggle ? CashIn() : ToReceiveView();
+        });
+      },
+    );
+  }
+
+  Widget _selectDateAndTimes() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        InkWell(
+          onTap: () async {
+            final date = await showDatePicker(
+                context: context,
+                initialDate: DateTime.now(),
+                firstDate: DateTime(2000, 8),
+                lastDate: DateTime(2101));
+
+            // transactionStore.setTransactionDate(date);
+          },
+          child: Row(
+            children: [
+              const Icon(Icons.calendar_today),
+              Observer(builder: (_) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                  child: Text("27-5-2022"
+                      // DateFormat('d-M-y')
+                      //   .format(transactionStore.transactionDate)
+                      ),
+                );
+              }),
+              const Icon(Icons.arrow_drop_down_sharp),
+            ],
+          ),
+        ),
+        InkWell(
+          onTap: () async {
+            final time = await showTimePicker(
+              context: context,
+              // initialTime: transactionStore.transactionTime,
+              initialTime: TimeOfDay.now(),
+            );
+            // transactionStore.setTransactionTime(time);
+          },
+          child: Row(
+            children: [
+              const Icon(Icons.access_time_sharp),
+              Observer(builder: (_) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 3.0),
+                  child: Text("11:46 AM"
+                      // transactionStore.transactionTime.format(context)
+                      ),
+                );
+              }),
+              const Icon(Icons.arrow_drop_down_sharp),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  switchI() {
+    // CashIn();
+    // if (toggle) {
+    // isCashIn! ? CashIn() : ToReceiveView();
     if (isCashIn!) {
-      FlutterSwitch(
-        showOnOff: true,
-        activeText: "Cash In",
-        valueFontSize: 10.0,
-        width: 110,
-        inactiveText: "To Receive",
-        activeColor: Colors.red,
-        borderRadius: 20.0,
-        value: toggle,
-        inactiveColor: Colors.green,
-        onToggle: (value) {
-          setState(() {
-            toggle = value;
-          });
-        },
-      );
+      toggle ? CashIn() : ToReceiveView();
+    } else {
+      toggle2 ? CashIn() : ToReceiveView();
     }
   }
 }

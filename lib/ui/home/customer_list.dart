@@ -17,14 +17,26 @@ class _CustomerListState extends State<CustomerList> {
   @override
   Widget build(BuildContext context) {
     final ThemeData _theme = Theme.of(context);
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: _theme.primaryColor,
-        // title: Text("Help & Support"),
-        actions: [mySwitch()],
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: _theme.primaryColor,
+          // title: Text("Help & Support"),
+          // actions: [mySwitch()],
+          bottom: TabBar(
+            tabs: [
+              Tab(text: "To Receive"),
+              Tab(text: "To Pay"),
+            ]
+            ),
+        ),
+        // body: toggle ? CreditView() : ToReceiveView(),
+        body: TabBarView(children: [
+           ToReceiveView(),
+           CreditView(),
+        ]),
       ),
-      body: toggle ? CreditView() : ToReceiveView(),
-      // body:
     );
   }
 

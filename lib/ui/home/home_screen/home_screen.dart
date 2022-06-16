@@ -3,6 +3,7 @@ import 'package:cashbook/stores/home_screen_store.dart';
 import 'package:cashbook/stores/transaction_store.dart';
 import 'package:cashbook/ui/home/book_list_view.dart';
 import 'package:cashbook/ui/home/credit_screen.dart';
+import 'package:cashbook/ui/home/customer_list.dart';
 import 'package:cashbook/ui/home/filters_sheet.dart';
 import 'package:cashbook/ui/home/reporting_screen.dart';
 import 'package:cashbook/ui/home/time_filters.dart';
@@ -582,16 +583,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         const SizedBox(width: 15.0),
-        // Expanded(
-        //   child: CircleAvatar(
-        //     child: IconButton(
-        //       onPressed: () {
-        //         Navigator.of(context).pushNamed(CreditScreen.routeName);
-        //       },
-        //       icon: Icon(Icons.add),
-        //     ),
-        //   ),
-        // ),
+        Expanded(
+          child: CircleAvatar(
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(CustomerList.routeName);
+              },
+              icon: Icon(Icons.add),
+            ),
+          ),
+        ),
         Expanded(
           child: ElevatedButton.icon(
             key: _cashOutBtnKey,

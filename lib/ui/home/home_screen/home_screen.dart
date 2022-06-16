@@ -582,16 +582,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         const SizedBox(width: 15.0),
-        Expanded(
-          child: CircleAvatar(
-            child: IconButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed(CreditScreen.routeName);
-              },
-              icon: Icon(Icons.add),
-            ),
-          ),
-        ),
+        // Expanded(
+        //   child: CircleAvatar(
+        //     child: IconButton(
+        //       onPressed: () {
+        //         Navigator.of(context).pushNamed(CreditScreen.routeName);
+        //       },
+        //       icon: Icon(Icons.add),
+        //     ),
+        //   ),
+        // ),
         Expanded(
           child: ElevatedButton.icon(
             key: _cashOutBtnKey,

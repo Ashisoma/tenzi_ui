@@ -199,6 +199,7 @@ class _ManageTransactionState extends State<ManageTransaction> {
   CashIn() {
     ThemeData _theme = Theme.of(context);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(12.0),
@@ -283,6 +284,7 @@ class _ManageTransactionState extends State<ManageTransaction> {
 
   ToReceiveView() {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         padding: const EdgeInsets.all(12.0),
         child: Form(
@@ -1198,16 +1200,5 @@ class _ManageTransactionState extends State<ManageTransaction> {
                   // color: Colors.red,
                   ))),
     );
-  }
-
-  switchI() {
-    // CashIn();
-    // if (toggle) {
-    // isCashIn! ? CashIn() : ToReceiveView();
-    if (isCashIn!) {
-      toggle ? CashIn() : ToReceiveView();
-    } else {
-      toggle2 ? CashIn() : ToReceiveView();
-    }
   }
 }

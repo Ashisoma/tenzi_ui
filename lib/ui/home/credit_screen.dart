@@ -113,7 +113,7 @@ class _CreditScreenState extends State<CreditScreen> {
       children: [
         InkWell(
           onTap: () async {
-            final date = await showDatePicker(
+            var date = await showDatePicker(
                 context: context,
                 initialDate: DateTime.now(),
                 firstDate: DateTime(2000, 8),

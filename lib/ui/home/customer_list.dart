@@ -1,4 +1,5 @@
 import 'package:cashbook/ui/home/add_customer_screen.dart';
+import 'package:cashbook/ui/manage_transaction/addCustomer.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -12,7 +13,7 @@ class CustomerList extends StatefulWidget {
 }
 
 class _CustomerListState extends State<CustomerList> {
-  bool toggle = false;  
+  bool toggle = false;
 
   @override
   Widget build(BuildContext context) {
@@ -24,17 +25,15 @@ class _CustomerListState extends State<CustomerList> {
           backgroundColor: _theme.primaryColor,
           // title: Text("Help & Support"),
           // actions: [mySwitch()],
-          bottom: TabBar(
-            tabs: [
-              Tab(text: "To Receive"),
-              Tab(text: "To Pay"),
-            ]
-            ),
+          bottom: TabBar(tabs: [
+            Tab(text: "To Receive"),
+            Tab(text: "To Pay"),
+          ]),
         ),
         // body: toggle ? CreditView() : ToReceiveView(),
         body: TabBarView(children: [
-           ToReceiveView(),
-           CreditView(),
+          ToReceiveView(),
+          CreditView(),
         ]),
       ),
     );
@@ -186,7 +185,7 @@ class _CustomerListState extends State<CustomerList> {
     return FloatingActionButton.extended(
         backgroundColor: Colors.blue,
         onPressed: () {
-          Navigator.of(context).pushNamed(CustomerScreen.routeName);
+          Navigator.of(context).pushNamed(PhoneBookScreen.routeName);
         },
         icon: Icon(
           Icons.add,

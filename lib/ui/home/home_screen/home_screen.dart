@@ -582,7 +582,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        const SizedBox(width: 15.0),
+        const SizedBox(width: 5.0),
         Expanded(
           child: CircleAvatar(
             child: IconButton(

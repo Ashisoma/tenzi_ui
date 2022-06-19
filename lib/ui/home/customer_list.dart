@@ -1,5 +1,5 @@
 import 'package:cashbook/ui/home/add_customer_screen.dart';
-import 'package:cashbook/ui/manage_transaction/addCustomer.dart';
+import 'package:cashbook/ui/manage_transaction/phone_book_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_switch/flutter_switch.dart';
@@ -240,7 +240,9 @@ class _CustomerListState extends State<CustomerList> {
           // }
 
           return GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(CustomerScreen.routeName);
+            },
             //Navigator.of(context)
             // .pushNamed(TransactionDetailsScreen.routeName
             //arguments: {
@@ -420,7 +422,9 @@ class _CustomerListState extends State<CustomerList> {
           // }
 
           return GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.of(context).pushNamed(CustomerScreen.routeName);
+            },
             //Navigator.of(context)
             // .pushNamed(TransactionDetailsScreen.routeName
             //arguments: {

@@ -1,3 +1,4 @@
+import 'package:cashbook/ui/home/add_customer_screen.dart';
 import 'package:cashbook/ui/home/customer_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -65,6 +66,26 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
             TextFormField(
               decoration: const InputDecoration(
                 hintText: 'Phone Number',
+                contentPadding:
+                    EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  borderSide: BorderSide(
+                    color: Colors.grey,
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  borderSide: BorderSide(color: Colors.blue),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            TextFormField(
+              decoration: const InputDecoration(
+                hintText: 'Email Address',
                 contentPadding:
                     EdgeInsets.symmetric(vertical: 2.0, horizontal: 8.0),
                 enabledBorder: OutlineInputBorder(
@@ -160,17 +181,17 @@ class _PhoneBookScreenState extends State<PhoneBookScreen> {
   floatingActionButton2() {
     ThemeData _theme = Theme.of(context);
     return InkWell(
-      onTap: () => Navigator.of(context).pushNamed(CustomerList.routeName),
+      onTap: () => Navigator.of(context).pushNamed(CustomerScreen.routeName),
       child: Container(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 25.0),
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
+            border: Border.all(color: Colors.green),
             borderRadius: BorderRadius.circular(5.0),
           ),
           child: Text('Save',
               style: _theme.textTheme.headline4!.copyWith(
-                  // color: Colors.red,
-                  ))),
+                color: Colors.green,
+              ))),
     );
   }
 }

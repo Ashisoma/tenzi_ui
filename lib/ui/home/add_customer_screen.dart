@@ -3,6 +3,7 @@ import 'package:cashbook/ui/home/home_screen/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
+// todo: change this name to customerprofilesecreen
 class CustomerScreen extends StatefulWidget {
   const CustomerScreen({Key? key}) : super(key: key);
   static const routeName = '/customer-screen';
@@ -21,7 +22,7 @@ class _CustomerScreenState extends State<CustomerScreen> {
         backgroundColor: _theme.primaryColor,
         // title: Text("Help & Support"),
         // actions: [mySwitch()],
-        
+
         actions: [
           IconButton(
               onPressed: () => Navigator.of(context).push(
@@ -254,13 +255,6 @@ class _CustomerScreenState extends State<CustomerScreen> {
       ),
       floatingActionButton: floatingActionButton(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-    );
-  }
-
-  Widget myne() {
-    return Container(
-      height: 200,
-      color: Colors.green,
     );
   }
 

@@ -10,7 +10,7 @@ import 'package:cashbook/ui/home/credit_screen.dart';
 import 'package:cashbook/ui/home/customer_list.dart';
 import 'package:cashbook/ui/home/no_book_screen.dart';
 import 'package:cashbook/ui/home/pdf_view_screen.dart';
-import 'package:cashbook/ui/manage_transaction/addCustomer.dart';
+import 'package:cashbook/ui/manage_transaction/phone_book_screen.dart';
 import 'package:cashbook/ui/profile/help_screen.dart';
 import 'package:cashbook/ui/profile/question_details.dart';
 import 'package:cashbook/ui/profile/user_profile_screen.dart';
